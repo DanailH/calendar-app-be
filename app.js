@@ -1,25 +1,56 @@
 var createError = require('http-errors');
-var express = require('express');
 var path = require('path');
+var express = require('express');
+var mongoose = require('mongoose');
+var passport = require('passport');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth');
+var Strategy = require('./models/passport');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+var db = mongoose.connection;
+mongoose.connect('mongodb://admin:admin123@ds137019.mlab.com:37019/calendar-app', {
+  useNewUrlParser: true
+});
 
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  console.log('Connected to mLab db');
+});
+
+// Middleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+passport.use(Strategy);
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+passport.deserializeUser(function (id, done) {
+  User.getUserById(id, function (err, user) {
+    done(err, user);
+  });
+});
+
+// Express Session
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}));
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
+
+// API endpoints
+app.use('/auth', authRouter);
 app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
@@ -35,7 +66,6 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
 });
 
 module.exports = app;
