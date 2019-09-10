@@ -28,8 +28,6 @@ User.getUserByEmail = function (email, callback) {
     email: email
   };
 
-  console.log(email)
-
   User.findOne(query, callback);
 }
 

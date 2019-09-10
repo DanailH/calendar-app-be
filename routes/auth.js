@@ -6,23 +6,27 @@ var router = express.Router();
 
 router.post('/register', function (req, res) {
   var password = req.body.password;
+  var passwordRe = req.body.passwordRe;
 
-  var newUser = new User({
-    email: req.body.email,
-    password: req.body.password
-  });
+  if (password == passwordRe) {
+    var newUser = new User({
+      email: req.body.email,
+      password: req.body.password
+    });
 
-  User.createUser(newUser, function(err, user) {
-    if(err) throw err;
+    User.createUser(newUser, function(err, user) {
+      if(err) throw err;
 
-    res.send(user).end();
-  });
+      res.send(user).end();
+    });
+  } else {
+    res.status(401).send("{errors: \"Passwords don't match\"}").end();
+  }
 });
 
 router.post('/login',
   passport.authenticate('local'),
   function (req, res) {
-    console.log(req)
     res.send(req.user);
   }
 );
@@ -30,6 +34,14 @@ router.post('/login',
 router.get('/logout', function (req, res) {
   req.logout();
   res.send(null);
+});
+
+router.get('/isAuth', function (req, res) {
+  if (req.isAuthenticated()) {
+    res.status(200).send().end();
+  } else {
+    res.status(401).send().end();
+  }
 });
 
 module.exports = router;

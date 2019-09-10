@@ -9,6 +9,7 @@ var logger = require('morgan');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var Strategy = require('./models/passport');
+var User = require('./models/user');
 
 var app = express();
 
@@ -25,10 +26,21 @@ db.once('open', function () {
 // Middleware
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
 passport.use(Strategy);
+
+// Express Session
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}));
+app.use(express.urlencoded({ extended: false }));
+
+// Passport init
+app.use(passport.initialize());
+app.use(passport.session());
+
 passport.serializeUser(function (user, done) {
   done(null, user.id);
 });
@@ -37,17 +49,6 @@ passport.deserializeUser(function (id, done) {
     done(err, user);
   });
 });
-
-// Express Session
-app.use(session({
-  secret: 'secret',
-  saveUninitialized: true,
-  resave: true
-}));
-
-// Passport init
-app.use(passport.initialize());
-app.use(passport.session());
 
 // API endpoints
 app.use('/auth', authRouter);

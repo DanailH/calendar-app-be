@@ -7,12 +7,8 @@ var Strategy = new LocalStrategy (
     passwordField: 'password'
   },
   function (email, password, done) {
-    console.log(email, password)
-
     User.getUserByEmail(email, function (err, user) {
       if (err) throw err;
-
-      console.log(err, user)
 
       if (!user) {
         return done(null, false, {
