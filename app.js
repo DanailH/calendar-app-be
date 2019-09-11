@@ -6,10 +6,11 @@ var passport = require('passport');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var logger = require('morgan');
-var usersRouter = require('./routes/users');
-var authRouter = require('./routes/auth');
 var Strategy = require('./models/passport');
 var User = require('./models/user');
+var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth');
+var holidayRouter = require('./routes/holiday');
 
 var app = express();
 
@@ -53,6 +54,7 @@ passport.deserializeUser(function (id, done) {
 // API endpoints
 app.use('/auth', authRouter);
 app.use('/users', usersRouter);
+app.use('/holiday', holidayRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
