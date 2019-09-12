@@ -1,5 +1,4 @@
 var createError = require('http-errors');
-var path = require('path');
 var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');

@@ -5,6 +5,9 @@ var HolidaysSchema = mongoose.Schema({
   userId: {
     type: String
   },
+  country: {
+    type: String
+  },
   holidaysCount: {
     type: Number
   },

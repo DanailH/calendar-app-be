@@ -1,8 +1,22 @@
 var express = require('express');
 var router = express.Router();
 var Holidays = require('../models/holidays');
+var Publics = require('../models/publics');
 
-// Endpoint to get current user
+router.get('/public', function (req, res) {
+  var countryCode = req.query.countryCode;
+
+  Publics.getPublicByCountryCode(countryCode, function (err, publicHolidays) {
+    if (err) throw err;
+
+    if (publicHolidays) {
+      res.send(publicHolidays).end();
+    } else {
+      res.status(404).send("{errors: \"No data for the given country\"}").end();
+    }
+  });
+});
+
 router.get('/holidays', function (req, res) {
   var userId = req.query.userId;
 
@@ -12,6 +26,7 @@ router.get('/holidays', function (req, res) {
     if (!holidays) {
       res.send({
         userId: userId,
+        country: '',
         holidaysCount: 0,
         selectedHolidays: []
       }).end();
@@ -23,11 +38,13 @@ router.get('/holidays', function (req, res) {
 
 router.post('/holidays', function (req, res) {
   var userId = req.body.userId;
+  var country = req.body.country;
   var holidaysCount = req.body.holidaysCount;
   var selectedHolidays = req.body.selectedHolidays;
 
   var newDataSet = new Holidays({
     userId: userId,
+    country: '',
     holidaysCount: holidaysCount,
     selectedHolidays: selectedHolidays
   });
@@ -43,6 +60,7 @@ router.post('/holidays', function (req, res) {
       });
     } else {
       holidays.userId = userId;
+      holidays.country = country;
       holidays.holidaysCount = holidaysCount;
       holidays.selectedHolidays = selectedHolidays;
 
