@@ -10,7 +10,9 @@ var User = require('./models/user');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var holidayRouter = require('./routes/holiday');
+var cors = require('cors');
 
+var allowedOrigins = ['https://days-off.herokuapp.com'];
 var app = express();
 
 var db = mongoose.connection;
@@ -24,6 +26,20 @@ db.once('open', function () {
 });
 
 // Middleware
+app.use(cors({
+  credentials: true,
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) === -1) {
+      var msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+
+      return callback(new Error(msg), false);
+    }
+
+    return callback(null, true);
+  }
+}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
