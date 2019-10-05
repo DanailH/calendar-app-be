@@ -8,10 +8,12 @@ router.post('/register', function (req, res) {
   var password = req.body.password;
   var passwordRe = req.body.passwordRe;
 
-  if (password == passwordRe) {
+  if (password === passwordRe && req.body.email && req.body.firstName && req.body.lastName) {
     var newUser = new User({
       email: req.body.email,
-      password: req.body.password
+      password: req.body.password,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName
     });
 
     User.createUser(newUser, function(err, user) {
@@ -20,7 +22,7 @@ router.post('/register', function (req, res) {
       res.send(user).end();
     });
   } else {
-    res.status(401).send("{errors: \"Passwords don't match\"}").end();
+    res.status(401).end();
   }
 });
 
