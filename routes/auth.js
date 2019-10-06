@@ -5,25 +5,34 @@ var User = require('../models/user');
 var router = express.Router();
 
 router.post('/register', function (req, res) {
-  var password = req.body.password;
-  var passwordRe = req.body.passwordRe;
+  var requestBody = req.body;
+  var password = requestBody.password;
+  var passwordRe = requestBody.passwordRe;
 
-  if (password === passwordRe && req.body.email && req.body.firstName && req.body.lastName) {
-    var newUser = new User({
-      email: req.body.email,
-      password: req.body.password,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName
-    });
+  User.getUserByEmail(requestBody.email, function (err, user) {
+    if (!user) {
+      if (password === passwordRe && requestBody.email && requestBody.firstName && requestBody.lastName) {        
+        var newUser = new User({
+          email: requestBody.email,
+          password: requestBody.password,
+          firstName: requestBody.firstName,
+          lastName: requestBody.lastName
+        });
 
-    User.createUser(newUser, function(err, user) {
-      if(err) throw err;
+        User.createUser(newUser, function (err, user) {
+          if (err) throw err;
 
-      res.send(user).end();
-    });
-  } else {
-    res.status(401).end();
-  }
+          res.send(user).end();
+        });
+      } else {
+        res.statusMessage = "All fields required, please check and try again.";
+        res.status(401).end();
+      }
+    } else {
+      res.statusMessage = "This email already exists.";
+      res.status(401).end();
+    }
+  })
 });
 
 router.post('/login',
