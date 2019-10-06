@@ -1,9 +1,16 @@
 var express = require('express');
+var User = require('../models/user');
 var router = express.Router();
 
-// Endpoint to get current user
 router.get('/user', function(req, res) {
-  res.send(req.user);
+  var userId = req.query.userId;
+
+  User.getUserById(userId, function (err, user) {
+    if (err) throw err;
+    
+    res.send(user).end();
+  });
 });
+
 
 module.exports = router;

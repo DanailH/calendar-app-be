@@ -8,7 +8,7 @@ var PublicSchema = mongoose.Schema({
   countryCode: {
     type: String
   },
-  publicHolidays: [String]
+  publicHolidays: Object
 });
 
 var Public = mongoose.model('Public', PublicSchema);
