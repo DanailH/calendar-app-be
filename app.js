@@ -12,7 +12,7 @@ var authRouter = require('./routes/auth');
 var holidayRouter = require('./routes/holiday');
 var cors = require('cors');
 
-var allowedOrigins = ['http://app.foiz.io/'];
+var allowedOrigins = ['https://app.foiz.io/'];
 var app = express();
 
 var db = mongoose.connection;
