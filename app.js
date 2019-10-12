@@ -14,7 +14,7 @@ var holidayRouter = require('./routes/holiday');
 var app = express();
 
 var db = mongoose.connection;
-mongoose.connect('mongodb://admin:admin123@ds137019.mlab.com:37019/calendar-app', {
+mongoose.connect('mongodb://danail:Andromeda31233@ds233968-a0.mlab.com:33968,ds233968-a1.mlab.com:33968/heroku_bpbtk6cv?replicaSet=rs-ds233968', {
   useNewUrlParser: true
 });
 
