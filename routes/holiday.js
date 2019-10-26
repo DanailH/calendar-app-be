@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Holidays = require('../models/holidays');
 var Publics = require('../models/publics');
+var User = require('../models/user');
 
 router.get('/public', function (req, res) {
   var countryCode = req.query.countryCode;
@@ -47,6 +48,13 @@ router.post('/holidays', function (req, res) {
     country: '',
     holidaysCount: holidaysCount,
     selectedHolidays: selectedHolidays
+  });
+
+  User.getUserById(userId, function (err, user) {
+    if (err) throw err;
+
+    user.isNewUser = false;
+    User.updateUser(user)
   });
 
   Holidays.getHolidaysByUserId(userId, function (err, holidays) {
