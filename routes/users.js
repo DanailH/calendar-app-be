@@ -37,5 +37,27 @@ router.put('/user', function(req, res) {
   })
 });
 
+router.post('/shareCalendar', function(req, res) {
+  var userId = req._id;
+  var targetUserEmail = req.targetUserEmail;
+
+  User.getUserByEmail(targetUserEmail, function(err, user) {
+    if (err) throw err;
+
+    if (!user) {
+      user.sharedUsers.push(userId);
+
+      User.updateUser(user, function (err, user) {
+        if (err) throw err;
+
+        res.send(200).end();
+      });
+    } else {
+      res.statusMessage = "No user found";
+      res.status(404).end();
+    }
+  })
+});
+
 
 module.exports = router;

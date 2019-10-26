@@ -18,7 +18,8 @@ var UserSchema = mongoose.Schema({
   },
   isNewUser: {
     type: Boolean
-  }
+  },
+  sharedUsers: [String]
 });
 
 var User = mongoose.model('User', UserSchema);
