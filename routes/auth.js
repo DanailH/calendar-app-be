@@ -11,12 +11,13 @@ router.post('/register', function (req, res) {
 
   User.getUserByEmail(requestBody.email, function (err, user) {
     if (!user) {
-      if (password === passwordRe && requestBody.email && requestBody.firstName && requestBody.lastName) {        
+      if (password === passwordRe && requestBody.email && requestBody.firstName && requestBody.lastName) {
         var newUser = new User({
           email: requestBody.email,
           password: requestBody.password,
           firstName: requestBody.firstName,
-          lastName: requestBody.lastName
+          lastName: requestBody.lastName,
+          isNewUser: true
         });
 
         User.createUser(newUser, function (err, user) {
