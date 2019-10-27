@@ -3,7 +3,13 @@ var User = require('../models/user');
 var router = express.Router();
 
 router.get('/user', function(req, res) {
-  var userId = req.query.userId;
+  console.log(req.session)
+  if (!req.session.passport) {
+    res.send(401).end();
+  }
+
+  var userId = req.session.passport.user;
+  // var userId = req.query.userId;
 
   User.getUserById(userId, function (err, user) {
     if (err) throw err;
@@ -19,7 +25,13 @@ router.get('/user', function(req, res) {
 });
 
 router.put('/user', function(req, res) {
-  var userId = req.query.userId;
+  console.log(req.session)
+  if (!req.session.passport) {
+    res.send(401).end();
+  }
+
+  var userId = req.session.passport.user;
+  // var userId = req.query.userId;
 
   User.getUserById(userId, function (err, user) {
     if (err) throw err;
@@ -38,7 +50,13 @@ router.put('/user', function(req, res) {
 });
 
 router.post('/shareCalendar', function(req, res) {
-  var userId = req._id;
+  console.log(req.session)
+  if (!req.session.passport) {
+    res.send(401).end();
+  }
+
+  var userId = req.session.passport.user;
+  // var userId = req._id;
   var targetUserEmail = req.targetUserEmail;
 
   User.getUserByEmail(targetUserEmail, function(err, user) {

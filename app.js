@@ -33,7 +33,8 @@ passport.use(Strategy);
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
-  resave: true
+  resave: true,
+  maxAge: 20000
 }));
 app.use(express.urlencoded({ extended: false }));
 
