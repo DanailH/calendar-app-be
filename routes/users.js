@@ -50,19 +50,17 @@ router.put('/user', function(req, res) {
 });
 
 router.post('/shareCalendar', function(req, res) {
-  console.log(req.session)
   if (!req.session.passport) {
     res.send(401).end();
   }
 
   var userId = req.session.passport.user;
-  // var userId = req._id;
-  var targetUserEmail = req.targetUserEmail;
+  var targetUserEmail = req.body.targetUserEmail;
 
   User.getUserByEmail(targetUserEmail, function(err, user) {
     if (err) throw err;
-
-    if (!user) {
+      console.log(user)
+    if (user) {
       user.sharedUsers.push(userId);
 
       User.updateUser(user, function (err, user) {
