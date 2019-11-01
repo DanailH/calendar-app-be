@@ -1,6 +1,7 @@
 var express = require('express');
 var passport = require('passport');
 var User = require('../models/user');
+var Invites = require('../models/invites');
 
 var router = express.Router();
 
@@ -12,18 +13,27 @@ router.post('/register', function (req, res) {
   User.getUserByEmail(requestBody.email, function (err, user) {
     if (!user) {
       if (password === passwordRe && requestBody.email && requestBody.firstName && requestBody.lastName) {
-        var newUser = new User({
-          email: requestBody.email,
-          password: requestBody.password,
-          firstName: requestBody.firstName,
-          lastName: requestBody.lastName,
-          isNewUser: true
-        });
-
-        User.createUser(newUser, function (err, user) {
+        Invites.getInviteeByEmail(requestBody.email, function (err, invitee) {
           if (err) throw err;
 
-          res.send(user).end();
+          var newUser = new User({
+            email: requestBody.email,
+            password: requestBody.password,
+            firstName: requestBody.firstName,
+            lastName: requestBody.lastName,
+            isNewUser: true,
+            sharedUsers: []
+          });
+
+          if (invitee) {
+            newUser.sharedUsers = invitee.shared;
+          }
+
+          User.createUser(newUser, function (err, user) {
+            if (err) throw err;
+
+            res.send(user).end();
+          });
         });
       } else {
         res.statusMessage = "All fields required, please check and try again.";

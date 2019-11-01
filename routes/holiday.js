@@ -19,7 +19,6 @@ router.get('/public', function (req, res) {
 });
 
 router.get('/holidays', function (req, res) {
-  console.log(req.session)
   if (!req.session.passport) {
     res.send(401).end();
   }
@@ -44,13 +43,11 @@ router.get('/holidays', function (req, res) {
 });
 
 router.post('/holidays', function (req, res) {
-  console.log(req.session)
   if (!req.session.passport) {
     res.send(401).end();
   }
 
   var userId = req.session.passport.user;
-  // var userId = req.body.userId;
   var country = req.body.country;
   var holidaysCount = req.body.holidaysCount;
   var selectedHolidays = req.body.selectedHolidays;

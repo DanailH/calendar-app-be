@@ -1,9 +1,10 @@
 var express = require('express');
 var User = require('../models/user');
+var Invites = require('../models/invites');
+var emailer = require('../emailer');
 var router = express.Router();
 
 router.get('/user', function(req, res) {
-  console.log(req.session)
   if (!req.session.passport) {
     res.send(401).end();
   }
@@ -25,7 +26,6 @@ router.get('/user', function(req, res) {
 });
 
 router.put('/user', function(req, res) {
-  console.log(req.session)
   if (!req.session.passport) {
     res.send(401).end();
   }
@@ -59,18 +59,85 @@ router.post('/shareCalendar', function(req, res) {
 
   User.getUserByEmail(targetUserEmail, function(err, user) {
     if (err) throw err;
-      console.log(user)
     if (user) {
       user.sharedUsers.push(userId);
 
       User.updateUser(user, function (err, user) {
         if (err) throw err;
 
+        emailer.transporter.sendMail({
+          from: 'team@foiz.io',
+          to: user.email,
+          subject: `${req.user.firstName} has shared their calendar with you!`,
+          html: emailer.setTemplate(req.user.firstName, req.user.lastName)
+        }, function (error, info) {
+          if (error) {
+            throw error;
+          } else {
+            console.log('Email sent: ' + info.response);
+          }
+        });
+
         res.send(200).end();
       });
     } else {
-      res.statusMessage = "No user found";
-      res.status(404).end();
+      Invites.getInviteeByEmail(targetUserEmail, function (err, invitee) {
+        if (err) throw err;
+
+        if (invitee) {
+          if (invitee.shared.includes(userId)) {
+            res.send(200).end();
+          } else {
+            Invites.setInvitee({
+              email: targetUserEmail,
+              shared: invitee.shared.push(userId)
+            }, function (err, invitee) {
+              if (err) {
+                res.send(400).end();
+              } else {
+                emailer.transporter.sendMail({
+                  from: 'team@foiz.io',
+                  to: targetUserEmail,
+                  subject: `${req.user.firstName} has shared their calendar with you!`,
+                  html: emailer.setTemplate(req.user.firstName, req.user.lastName)
+                }, function (error, info) {
+                  if (error) {
+                    throw error;
+                  } else {
+                    console.log('Email sent: ' + info.response);
+                  }
+                });
+
+                res.send(200).end();
+              }
+            });
+          }
+        } else {
+          Invites.setInvitee(new Invites({
+            email: targetUserEmail,
+            shared: [userId]
+          }), function (err, invitee) {
+            if (err) {
+              res.send(400).end();
+            } else {
+              emailer.transporter.sendMail({
+                from: 'team@foiz.io',
+                to: targetUserEmail,
+                subject: `${req.user.firstName} has shared their calendar with you!`,
+                html: emailer.setTemplate(req.user.firstName, req.user.lastName)
+              }, function (error, info) {
+                if (error) {
+                  throw error;
+                } else {
+                  console.log('Email sent: ' + info.response);
+                }
+              });
+
+              res.send(200).end();
+            }
+          });
+        }
+      });
     }
   })
 });
