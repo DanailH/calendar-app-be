@@ -23,11 +23,18 @@ db.once('open', function () {
   console.log('Connected to mLab db');
 });
 
+app.all('/*', function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 // Middleware
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
-passport.use(Strategy);
+passport.use(Strategy.LStrategy);
+passport.use(Strategy.FStrategy);
+passport.use(Strategy.GStrategy);
 
 // Express Session
 app.use(session({
