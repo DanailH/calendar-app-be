@@ -60,7 +60,11 @@ router.post('/shareCalendar', function(req, res) {
   User.getUserByEmail(targetUserEmail, function(err, user) {
     if (err) throw err;
     if (user) {
-      user.sharedUsers.push(userId);
+      if (user.sharedUsers) {
+        user.sharedUsers.push(userId);
+      } else {
+        user.sharedUsers = [userId];
+      }
 
       User.updateUser(user, function (err, user) {
         if (err) throw err;
