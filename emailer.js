@@ -265,7 +265,7 @@ var template = function (fname, lname) {
     <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px; font-family: 'Trebuchet MS', Tahoma, sans-serif"><![endif]-->
     <div style="color:#4F4F4F;font-family:'Montserrat', 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif;line-height:1.2;padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
     <div style="line-height: 1.2; font-family: 'Montserrat', 'Trebuchet MS', 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Tahoma, sans-serif; font-size: 12px; color: #4F4F4F; mso-line-height-alt: 14px;">
-    <p style="line-height: 1.2; text-align: center; font-size: 14px; mso-line-height-alt: 17px; margin: 0;"><span style="font-size: 14px;"><strong><a href="foiz.io" rel="noopener" style="text-decoration: underline; color: #4CB2FF;" target="_blank">foiz.io</a></strong></span></p>
+    <p style="line-height: 1.2; text-align: center; font-size: 14px; mso-line-height-alt: 17px; margin: 0;"><span style="font-size: 14px;"><strong><a href="https://foiz.io/" rel="noopener" style="text-decoration: underline; color: #4CB2FF;" target="_blank">foiz.io</a></strong></span></p>
     </div>
     </div>
     <!--[if mso]></td></tr></table><![endif]-->
