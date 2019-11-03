@@ -34,6 +34,7 @@ router.get('/holidays', function (req, res) {
         userId: userId,
         country: '',
         holidaysCount: 0,
+        maxHolidaysTransfer: 0,
         selectedHolidays: []
       }).end();
     } else {
@@ -50,12 +51,14 @@ router.post('/holidays', function (req, res) {
   var userId = req.session.passport.user;
   var country = req.body.country;
   var holidaysCount = req.body.holidaysCount;
+  var maxHolidaysTransfer = req.body.maxHolidaysTransfer;
   var selectedHolidays = req.body.selectedHolidays;
 
   var newDataSet = new Holidays({
     userId: userId,
     country: '',
     holidaysCount: holidaysCount,
+    maxHolidaysTransfer: maxHolidaysTransfer,
     selectedHolidays: selectedHolidays
   });
 
@@ -79,6 +82,7 @@ router.post('/holidays', function (req, res) {
       holidays.userId = userId;
       holidays.country = country;
       holidays.holidaysCount = holidaysCount;
+      holidays.maxHolidaysTransfer = maxHolidaysTransfer;
       holidays.selectedHolidays = selectedHolidays;
 
       holidays.save(function (err, data) {

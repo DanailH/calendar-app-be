@@ -11,6 +11,9 @@ var HolidaysSchema = mongoose.Schema({
   holidaysCount: {
     type: Number
   },
+  maxHolidaysTransfer: {
+    type: Number
+  },
   selectedHolidays: [String]
 });
 
