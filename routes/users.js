@@ -20,6 +20,7 @@ router.get('/user', function(req, res) {
       firstName: user.firstName,
       isNewUser: user.isNewUser,
       lastName: user.lastName,
+      sharedUsers: user.sharedUsers,
       _id: user._id
     }).end();
   });
