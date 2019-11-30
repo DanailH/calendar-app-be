@@ -23,8 +23,13 @@ router.get('/holidays', function (req, res) {
     res.send(401).end();
   }
 
-  var userId = req.session.passport.user;
-  // var userId = req.query.userId;
+  var userId;
+
+  if (req.query.userId) {
+    userId = req.query.userId;
+  } else {
+    userId = req.session.passport.user;
+  }
 
   Holidays.getHolidaysByUserId(userId, function (err, holidays) {
     if (err) throw err;
