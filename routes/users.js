@@ -17,7 +17,6 @@ router.get('/user', function(req, res) {
     userId = req.session.passport.user;
   }
 
-
   User.getUserById(userId, function (err, user) {
     if (err) throw err;
 
