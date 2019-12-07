@@ -60,7 +60,7 @@ passport.use(Strategy.GStrategy);
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
-  resave: false,
+  resave: true,
   maxAge: 20000,
   cookie: {
     secure: true
