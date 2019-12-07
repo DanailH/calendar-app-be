@@ -68,7 +68,7 @@ router.post('/shareCalendar', function(req, res) {
     if (user) {
       if (user.sharedUsers && user.sharedUsers.length) {
         if (user.sharedUsers.includes(userId)) {
-          res.send(400).end();
+          return res.send(409).end();
         } else {
           user.sharedUsers.push(userId);
         }
