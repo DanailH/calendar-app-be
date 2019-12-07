@@ -1,4 +1,4 @@
 module.exports = {
-    BaseUrl: 'http://localhost:3000',
-    ApiUrl: 'http://localhost:3001'
+    BaseUrl: 'https://app.foiz.io',
+    ApiUrl: 'https://api.foiz.io'
 }
