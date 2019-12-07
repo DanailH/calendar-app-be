@@ -60,10 +60,10 @@ passport.use(Strategy.GStrategy);
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
-  resave: true,
+  resave: false,
   maxAge: 20000,
   cookie: {
-    secure: true
+    secure: false
   }
 }));
 app.use(express.urlencoded({ extended: false }));
