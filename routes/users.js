@@ -20,6 +20,8 @@ router.get('/user', function(req, res) {
   User.getUserById(userId, function (err, user) {
     if (err) throw err;
 
+    if (!user) return res.send(404).end();
+
     res.send({
       email: user.email,
       firstName: user.firstName,
