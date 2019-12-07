@@ -68,6 +68,7 @@ router.get('/google/callback',
   }),
   function (req, res) {
     console.log('inside google callback')
+    console.log(req.session)
     console.log(req.session.passport)
     console.log(req.session.passport.user)
     console.log('inside google callback')
@@ -89,6 +90,7 @@ router.get('/logout', function (req, res) {
 
 router.get('/isAuth', function (req, res) {
   console.log('inside isAuth')
+  console.log(req.session)
   console.log(req.session.passport)
   console.log(req.session.passport.user)
   console.log(req.isAuthenticated())
