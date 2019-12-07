@@ -45,6 +45,7 @@ app.use(cors({
     return callback(null, true);
   }
 }));
+app.set('trust proxy', 1) // trust first proxy
 app.use(logger('dev'));
 app.use(express.json());
 app.use(cookieParser());
@@ -56,8 +57,11 @@ passport.use(Strategy.GStrategy);
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
-  resave: true,
-  maxAge: 20000
+  resave: false,
+  maxAge: 20000,
+  cookie: {
+    secure: true
+  }
 }));
 app.use(express.urlencoded({ extended: false }));
 
