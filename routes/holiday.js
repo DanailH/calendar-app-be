@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Holidays = require('../models/holidays');
 var Publics = require('../models/publics');
+var User = require('../models/user');
 
 router.get('/public', function (req, res) {
   var countryCode = req.query.countryCode;
@@ -18,7 +19,17 @@ router.get('/public', function (req, res) {
 });
 
 router.get('/holidays', function (req, res) {
-  var userId = req.query.userId;
+  if (!req.session.passport) {
+    res.send(401).end();
+  }
+
+  var userId;
+
+  if (req.query.userId) {
+    userId = req.query.userId;
+  } else {
+    userId = req.session.passport.user;
+  }
 
   Holidays.getHolidaysByUserId(userId, function (err, holidays) {
     if (err) throw err;
@@ -28,6 +39,7 @@ router.get('/holidays', function (req, res) {
         userId: userId,
         country: '',
         holidaysCount: 0,
+        maxHolidaysTransfer: 0,
         selectedHolidays: []
       }).end();
     } else {
@@ -37,16 +49,29 @@ router.get('/holidays', function (req, res) {
 });
 
 router.post('/holidays', function (req, res) {
-  var userId = req.body.userId;
+  if (!req.session.passport) {
+    res.send(401).end();
+  }
+
+  var userId = req.session.passport.user;
   var country = req.body.country;
   var holidaysCount = req.body.holidaysCount;
+  var maxHolidaysTransfer = req.body.maxHolidaysTransfer;
   var selectedHolidays = req.body.selectedHolidays;
 
   var newDataSet = new Holidays({
     userId: userId,
     country: '',
     holidaysCount: holidaysCount,
+    maxHolidaysTransfer: maxHolidaysTransfer,
     selectedHolidays: selectedHolidays
+  });
+
+  User.getUserById(userId, function (err, user) {
+    if (err) throw err;
+
+    user.isNewUser = false;
+    User.updateUser(user)
   });
 
   Holidays.getHolidaysByUserId(userId, function (err, holidays) {
@@ -62,6 +87,7 @@ router.post('/holidays', function (req, res) {
       holidays.userId = userId;
       holidays.country = country;
       holidays.holidaysCount = holidaysCount;
+      holidays.maxHolidaysTransfer = maxHolidaysTransfer;
       holidays.selectedHolidays = selectedHolidays;
 
       holidays.save(function (err, data) {

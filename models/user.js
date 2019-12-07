@@ -15,7 +15,11 @@ var UserSchema = mongoose.Schema({
   },
   lastName: {
     type: String
-  }
+  },
+  isNewUser: {
+    type: Boolean
+  },
+  sharedUsers: [String]
 });
 
 var User = mongoose.model('User', UserSchema);
@@ -27,6 +31,10 @@ User.createUser = function (newUser, callback) {
       newUser.save(callback);
     });
   });
+}
+
+User.updateUser = function(updatedUser, callback) {
+  updatedUser.save(callback)
 }
 
 User.getUserByEmail = function (email, callback) {
