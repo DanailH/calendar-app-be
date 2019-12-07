@@ -40,8 +40,6 @@ var GStrategy = new GoogleStrategy({
     callbackURL: config.ApiUrl + '/auth/google/callback'
   },
   function (accessToken, refreshToken, profile, done) {
-    console.log(profile)
-
     var newUser = new User({
       email: profile._json.email,
       firstName: profile._json.given_name,
