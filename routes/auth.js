@@ -69,6 +69,7 @@ router.get('/google/callback',
   function (req, res) {
     console.log('inside google callback')
     console.log(req.session)
+    console.log(req.user);
     console.log(req.session.passport)
     console.log(req.session.passport.user)
     console.log('inside google callback')
