@@ -85,7 +85,6 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/isAuth', function (req, res) {
-  console.log(req.session)
   if (req.isAuthenticated()) {
     res.status(200).send().end();
   } else {
