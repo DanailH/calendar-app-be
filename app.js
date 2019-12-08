@@ -10,7 +10,6 @@ var User = require('./models/user');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var holidayRouter = require('./routes/holiday');
-var RedisStore = require('connect-redis')(express);
 var cors = require('cors');
 
 var allowedOrigins = ['https://app.foiz.io'];
@@ -51,23 +50,20 @@ app.use(cors({
 }));
 app.use(logger('dev'));
 app.use(express.json());
-app.use(cookieParser());
+app.use(cookieParser('asdf33g4w4hghjkuil8saef345')); // cookie parser must use the same secret as express-session.
 passport.use(Strategy.LStrategy);
 passport.use(Strategy.FStrategy);
 passport.use(Strategy.GStrategy);
 
 // Express Session
 app.use(session({
-  store: new RedisStore({
-    pass: 'asdf',
-  }),
-  secret: 'asdf',
-  proxy: true,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    secure: true
-  }
+    secret: 'asdf33g4w4hghjkuil8saef345', // must match with the secret for cookie-parser
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      expires: 20000 // use expires instead of maxAge
+    }
 }));
 app.use(express.urlencoded({ extended: false }));
 
