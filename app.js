@@ -55,6 +55,10 @@ passport.use(Strategy.LStrategy);
 passport.use(Strategy.FStrategy);
 passport.use(Strategy.GStrategy);
 
+var cookieExpirationDate = new Date();
+var cookieExpirationDays = 365;
+cookieExpirationDate.setDate(cookieExpirationDate.getDate() + cookieExpirationDays);
+
 // Express Session
 app.use(session({
     secret: 'asdf33g4w4hghjkuil8saef345', // must match with the secret for cookie-parser
@@ -62,7 +66,7 @@ app.use(session({
     saveUninitialized: true,
     cookie: {
       httpOnly: true,
-      expires: 20000 // use expires instead of maxAge
+      expires: cookieExpirationDate // use expires instead of maxAge
     }
 }));
 app.use(express.urlencoded({ extended: false }));
