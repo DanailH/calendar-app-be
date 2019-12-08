@@ -24,7 +24,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {
   console.log('Connected to mLab db');
 });
-// app.set('trust proxy', 1) // trust first proxy
+app.set('trust proxy', 1) // trust first proxy
 app.all('/*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Credentials', true);
