@@ -19,12 +19,6 @@ router.get('/public', function (req, res) {
 });
 
 router.get('/holidays', function (req, res) {
-  console.log('inside holidays')
-  console.log(req.session)
-  console.log(req.user);
-  console.log(req.session.passport)
-  console.log(req.session.passport.user)
-  console.log('inside holidays')
   if (!req.session.passport) {
     res.send(401).end();
   }
