@@ -67,12 +67,6 @@ router.get('/google/callback',
     failureRedirect: config.BaseUrl + '/login'
   }),
   function (req, res) {
-    console.log('inside google callback')
-    console.log(req.session)
-    console.log(req.user);
-    console.log(req.session.passport)
-    console.log(req.session.passport.user)
-    console.log('inside google callback')
     res.redirect(config.BaseUrl + '/socialLoginSuccess');
   }
 );
@@ -90,12 +84,6 @@ router.get('/logout', function (req, res) {
 });
 
 router.get('/isAuth', function (req, res) {
-  console.log('inside isAuth')
-  console.log(req.session)
-  console.log(req.session.passport)
-  console.log(req.session.passport.user)
-  console.log(req.isAuthenticated())
-  console.log('inside isAuth')
   if (req.isAuthenticated()) {
     res.status(200).send().end();
   } else {
