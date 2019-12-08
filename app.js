@@ -10,6 +10,7 @@ var User = require('./models/user');
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
 var holidayRouter = require('./routes/holiday');
+var RedisStore = require('connect-redis')(express);
 var cors = require('cors');
 
 var allowedOrigins = ['https://app.foiz.io'];
@@ -57,10 +58,13 @@ passport.use(Strategy.GStrategy);
 
 // Express Session
 app.use(session({
-  secret: 'secret',
-  saveUninitialized: true,
+  store: new RedisStore({
+    pass: 'asdf',
+  }),
+  secret: 'asdf',
+  proxy: true,
   resave: false,
-  maxAge: 20000,
+  saveUninitialized: true,
   cookie: {
     secure: true
   }
