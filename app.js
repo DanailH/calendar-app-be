@@ -28,7 +28,7 @@ app.set('trust proxy', 1) // trust first proxy
 app.all('/*', function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
   next();
 });
@@ -65,7 +65,7 @@ app.use(session({
     resave: true,
     saveUninitialized: true,
     cookie: {
-      secure: true,
+      httpOnly: true,
       expires: cookieExpirationDate // use expires instead of maxAge
     }
 }));

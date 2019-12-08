@@ -81,12 +81,11 @@ router.post('/login',
 router.get('/logout', function (req, res) {
   req.logout();
   req.session.destroy();
-  req.session = null;
-  req.user = null;
   res.send(null);
 });
 
 router.get('/isAuth', function (req, res) {
+  console.log(req.session)
   if (req.isAuthenticated()) {
     res.status(200).send().end();
   } else {
