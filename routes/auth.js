@@ -80,6 +80,7 @@ router.post('/login',
 
 router.get('/logout', function (req, res) {
   req.logout();
+  req.session = null
   res.send(null);
 });
 
