@@ -19,6 +19,12 @@ var LStrategy = new LocalStrategy({
         });
       }
 
+      if (!user.password) {
+        return done(null, false, {
+          message: 'Invalid password'
+        });
+      }
+
       User.comparePassword(password, user.password, function (err, isMatch) {
         if (err) throw err;
 
